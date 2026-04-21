@@ -14,7 +14,7 @@ resource "aws_vpc" "main" {
 }
 
 # =====================
-# Subnet (public)
+# PUBLIC SUBNET
 # =====================
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
@@ -27,7 +27,19 @@ resource "aws_subnet" "public" {
 }
 
 # =====================
-# Internet Gateway
+# PRIVATE SUBNET
+# =====================
+resource "aws_subnet" "private" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.2.0/24"
+
+  tags = {
+    Name = "terraform-private-subnet"
+  }
+}
+
+# =====================
+# INTERNET GATEWAY
 # =====================
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
@@ -38,7 +50,7 @@ resource "aws_internet_gateway" "gw" {
 }
 
 # =====================
-# Route Table
+# ROUTE TABLE (PUBLIC)
 # =====================
 resource "aws_route_table" "rt" {
   vpc_id = aws_vpc.main.id
@@ -55,14 +67,14 @@ resource "aws_route" "route" {
   gateway_id             = aws_internet_gateway.gw.id
 }
 
-# Hubungkan subnet ke route table
+# Hubungkan route ke PUBLIC subnet saja
 resource "aws_route_table_association" "assoc" {
   subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.rt.id
 }
 
 # =====================
-# Security Group
+# SECURITY GROUP
 # =====================
 resource "aws_security_group" "sg" {
   name   = "allow-ssh-http"
@@ -98,7 +110,7 @@ resource "aws_security_group" "sg" {
 }
 
 # =====================
-# EC2 Instance
+# EC2 PUBLIC SERVER
 # =====================
 resource "aws_instance" "public" {
   ami           = "ami-0df7a207adb9748c7"
@@ -110,17 +122,34 @@ resource "aws_instance" "public" {
 
   vpc_security_group_ids = [aws_security_group.sg.id]
 
-  # 🔥 AUTO INSTALL WEB SERVER
+  # AUTO INSTALL WEB SERVER
   user_data = <<-EOF
               #!/bin/bash
               yum update -y
               yum install httpd -y
               systemctl start httpd
               systemctl enable httpd
-              echo "<h1>Web dari Terraform</h1>" > /var/www/html/index.html
+              echo "<h1>Web dari Terraform (Public Server)</h1>" > /var/www/html/index.html
               EOF
 
   tags = {
     Name = "terraform-public-server"
+  }
+}
+
+# =====================
+# EC2 PRIVATE SERVER
+# =====================
+resource "aws_instance" "private" {
+  ami           = "ami-0df7a207adb9748c7"
+  instance_type = "t3.micro"
+  subnet_id     = aws_subnet.private.id
+  key_name      = "my-key"
+
+  # ❗ TIDAK ADA PUBLIC IP
+  vpc_security_group_ids = [aws_security_group.sg.id]
+
+  tags = {
+    Name = "terraform-private-server"
   }
 }
