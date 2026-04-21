@@ -1,3 +1,11 @@
+terraform {
+  backend "s3" {
+    bucket = "terraform-state-athaya"
+    key    = "terraform.tfstate"
+    region = "ap-southeast-1"
+  }
+}
+
 provider "aws" {
   region = "ap-southeast-1"
 }
@@ -9,7 +17,7 @@ resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "terraform-vpc"
+    Name = "main-vpc"
   }
 }
 
@@ -22,7 +30,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "terraform-public-subnet"
+    Name = "public-subnet"
   }
 }
 
@@ -34,7 +42,7 @@ resource "aws_subnet" "private" {
   cidr_block = "10.0.2.0/24"
 
   tags = {
-    Name = "terraform-private-subnet"
+    Name = "private-subnet"
   }
 }
 
@@ -43,31 +51,21 @@ resource "aws_subnet" "private" {
 # =====================
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
-
-  tags = {
-    Name = "terraform-igw"
-  }
 }
 
 # =====================
-# ROUTE TABLE (PUBLIC)
+# ROUTE TABLE
 # =====================
 resource "aws_route_table" "rt" {
   vpc_id = aws_vpc.main.id
-
-  tags = {
-    Name = "terraform-rt"
-  }
 }
 
-# Route ke internet
 resource "aws_route" "route" {
   route_table_id         = aws_route_table.rt.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.gw.id
 }
 
-# Hubungkan route ke PUBLIC subnet saja
 resource "aws_route_table_association" "assoc" {
   subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.rt.id
@@ -80,37 +78,30 @@ resource "aws_security_group" "sg" {
   name   = "allow-ssh-http"
   vpc_id = aws_vpc.main.id
 
-  # SSH
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] # SSH
   }
 
-  # HTTP
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] # HTTP
   }
 
-  # Outbound
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  tags = {
-    Name = "terraform-sg"
-  }
 }
 
 # =====================
-# EC2 PUBLIC SERVER
+# EC2 PUBLIC
 # =====================
 resource "aws_instance" "public" {
   ami           = "ami-0df7a207adb9748c7"
@@ -118,18 +109,17 @@ resource "aws_instance" "public" {
   subnet_id     = aws_subnet.public.id
   key_name      = "my-key"
 
-  associate_public_ip_address = true
-
   vpc_security_group_ids = [aws_security_group.sg.id]
 
-  # AUTO INSTALL WEB SERVER
+  associate_public_ip_address = true
+
   user_data = <<-EOF
               #!/bin/bash
               yum update -y
               yum install httpd -y
               systemctl start httpd
               systemctl enable httpd
-              echo "<h1>Web dari Terraform (Public Server)</h1>" > /var/www/html/index.html
+              echo "<h1>Web dari Terraform</h1>" > /var/www/html/index.html
               EOF
 
   tags = {
@@ -138,7 +128,7 @@ resource "aws_instance" "public" {
 }
 
 # =====================
-# EC2 PRIVATE SERVER
+# EC2 PRIVATE
 # =====================
 resource "aws_instance" "private" {
   ami           = "ami-0df7a207adb9748c7"
@@ -146,7 +136,6 @@ resource "aws_instance" "private" {
   subnet_id     = aws_subnet.private.id
   key_name      = "my-key"
 
-  # ❗ TIDAK ADA PUBLIC IP
   vpc_security_group_ids = [aws_security_group.sg.id]
 
   tags = {
