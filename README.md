@@ -37,17 +37,17 @@ Arsitektur yang digunakan terdiri dari beberapa komponen utama:
 - Streaming video
 
 ## Cara Deployment
-# Clone repository
+- Clone repository
 git clone https://github.com/username/e-learning-cloud.git
 cd e-learning-cloud
 
-# Inisialisasi Terraform
+- Inisialisasi Terraform
 terraform init
 
-# Preview perubahan
+- Preview perubahan
 terraform plan
 
-# Deploy infrastructure
+- Deploy infrastructure
 terraform apply
 
 ## Anggota
