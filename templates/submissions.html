@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submissions</title>
+</head>
+<body>
+
+<h1>Student Submissions</h1>
+
+<ul>
+{% for s in submissions %}
+    <li>
+        {{ s[1] }} - {{ s[2] }}
+    </li>
+{% endfor %}
+</ul>
+
+</body>
+</html>

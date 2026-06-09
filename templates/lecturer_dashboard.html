@@ -1,70 +1,52 @@
 <!DOCTYPE html>
 <html>
-
 <head>
+    <title>Lecturer Dashboard</title>
 
-<title>Lecturer Dashboard</title>
-
-<link rel="stylesheet"
-href="{{ url_for('static',
-filename='css/style.css') }}">
-
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
 </head>
 
 <body>
 
 <nav class="navbar">
-
-<div class="logo">
-
-LearnSphere
-
-</div>
-
+    <div class="logo">
+        <a href="/" style="color:white;text-decoration:none;">
+            LearnSphere
+        </a>
+    </div>
 </nav>
 
-<div class="container">
+<div class="dashboard">
 
-<h1>Lecturer Dashboard</h1>
+    <h1>Lecturer Dashboard</h1>
 
-<div class="features">
+    <div class="cards">
 
-<div class="card">
+        <a href="/upload-video" class="card">
+            <h3>Upload Video</h3>
+            <p>Add Learning Videos</p>
+        </a>
 
-<h3>Upload Video</h3>
+        <a href="/upload-material" class="card">
+            <h3>Upload Material</h3>
+            <p>PDF / PPT / DOCX</p>
+        </a>
 
-<p>Add Learning Videos</p>
+        <a href="/create-assignment" class="card">
+            <h3>Create Assignment</h3>
+            <p>Create Student Tasks</p>
+        </a>
 
-</div>
+        <a href="/submissions" class="card">
+            <h3>View Submissions</h3>
+            <p>Review Student Work</p>
+        </a>
 
-<div class="card">
-
-<h3>Upload Material</h3>
-
-<p>PDF / PPT / DOCX</p>
-
-</div>
-
-<div class="card">
-
-<h3>Create Assignment</h3>
-
-<p>Create Student Tasks</p>
-
-</div>
-
-<div class="card">
-
-<h3>View Submissions</h3>
-
-<p>Review Student Work</p>
-
-</div>
-
-</div>
+    </div>
 
 </div>
 
 </body>
-
 </html>
