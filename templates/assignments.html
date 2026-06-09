@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Assignments</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static',
+    filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">LearnSphere</div>
+
+    <div>
+        <a href="/">Home</a>
+        <a href="/student">Student</a>
+        <a href="/lecturer">Lecturer</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h1>Assignment List</h1>
+
+    {% if assignments %}
+
+    <table class="table">
+
+        <tr>
+            <th>ID</th>
+            <th>Assignment</th>
+        </tr>
+
+        {% for a in assignments %}
+
+        <tr>
+            <td>{{ a[0] }}</td>
+            <td>{{ a[1] }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <div class="card">
+        <p>Belum ada tugas yang dibuat dosen.</p>
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
