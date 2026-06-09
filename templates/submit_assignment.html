@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Submit Assignment</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Submit Assignment</h1>
+
+<form
+method="POST"
+enctype="multipart/form-data">
+
+<input
+type="text"
+name="student"
+placeholder="Student Name"
+required>
+
+<br><br>
+
+<input
+type="file"
+name="file"
+required>
+
+<br><br>
+
+<button class="btn">
+
+Submit
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Create Assignment</title>
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Create Assignment</h1>
+
+<form method="POST">
+
+<input
+type="text"
+name="title"
+placeholder="Assignment Title"
+required>
+
+<br><br>
+
+<button class="btn">
+
+Create Assignment
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

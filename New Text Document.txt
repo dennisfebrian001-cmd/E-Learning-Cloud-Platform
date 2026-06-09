@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  flaskapp:
+    image: dennisfebrian/flaskapp:latest
+    container_name: flaskapp
+
+    restart: always
+
+    ports:
+      - "5000:5000"

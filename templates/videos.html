@@ -1,0 +1,18 @@
+<h1>Video Pembelajaran</h1>
+
+{% for video in videos %}
+
+<div class="card">
+
+<h3>{{ video[1] }}</h3>
+
+<a href="{{ video[2] }}"
+target="_blank">
+
+Tonton Video
+
+</a>
+
+</div>
+
+{% endfor %}

@@ -1,0 +1,13 @@
+<h1>Learning Materials</h1>
+
+{% for item in materials %}
+
+<div class="card">
+
+<h3>{{ item[1] }}</h3>
+
+<p>{{ item[2] }}</p>
+
+</div>
+
+{% endfor %}
