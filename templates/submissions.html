@@ -7,13 +7,22 @@
 
 <h1>Student Submissions</h1>
 
-<ul>
+<table border="1">
+<tr>
+    <th>ID</th>
+    <th>Student</th>
+    <th>File</th>
+</tr>
+
 {% for s in submissions %}
-    <li>
-        {{ s[1] }} - {{ s[2] }}
-    </li>
+<tr>
+    <td>{{ s[0] }}</td>
+    <td>{{ s[2] }}</td>
+    <td>{{ s[3] }}</td>
+</tr>
 {% endfor %}
-</ul>
+
+</table>
 
 </body>
 </html>

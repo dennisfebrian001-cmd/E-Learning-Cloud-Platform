@@ -100,10 +100,10 @@ def upload_material():
         cursor.execute(
             """
             INSERT INTO materials
-            (title,file_name)
-            VALUES(%s,%s)
+            (course_id,title,file_url)
+            VALUES(%s,%s,%s)
             """,
-            (title, filename)
+            (1, title, filename)
         )
 
         conn.commit()
@@ -132,10 +132,10 @@ def upload_video():
         cursor.execute(
             """
             INSERT INTO videos
-            (title,url)
-            VALUES(%s,%s)
+            (course_id,title,video_url)
+            VALUES(%s,%s,%s)
             """,
-            (title,youtube_url)
+            (1, title, youtube_url)
         )
 
         conn.commit()
@@ -183,10 +183,10 @@ def create_assignment():
         cursor.execute(
             """
             INSERT INTO assignments
-            (title)
-            VALUES(%s)
+            (course_id,title)
+            VALUES(%s,%s)
             """,
-            (title,)
+            (1, title)
         )
 
         conn.commit()
@@ -225,10 +225,10 @@ def submit_assignment():
         cursor.execute(
             """
             INSERT INTO submissions
-            (student_name,file_name)
-            VALUES(%s,%s)
+            (assignment_id,student_name,file_url)
+            VALUES(%s,%s,%s)
             """,
-            (student,filename)
+            (1, student, filename)
         )
 
         conn.commit()
@@ -279,5 +279,25 @@ def assignments():
     return render_template(
         "assignments.html",
         assignments=data
+    )
+
+@app.route("/submissions")
+def submissions():
+
+    conn = get_connection()
+
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM submissions"
+    )
+
+    data = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "submissions.html",
+        submissions=data
     )
 
