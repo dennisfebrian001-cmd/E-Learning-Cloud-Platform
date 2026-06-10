@@ -166,18 +166,36 @@ def upload_material():
         "upload_material.html"
     )
 
-@app.route("/upload-video",
-methods=["GET","POST"])
+    @app.route("/upload-video", methods=["GET", "POST"])
 def upload_video():
 
     if request.method == "POST":
 
         title = request.form["title"]
-
         youtube_url = request.form["youtube"]
 
-        conn = get_connection()
+        video_id = ""
 
+        if "watch?v=" in youtube_url:
+            video_id = youtube_url.split(
+                "watch?v="
+            )[1].split("&")[0]
+
+        elif "youtu.be/" in youtube_url:
+            video_id = youtube_url.split(
+                "youtu.be/"
+            )[1].split("?")[0]
+
+        elif "embed/" in youtube_url:
+            video_id = youtube_url.split(
+                "embed/"
+            )[1]
+
+        embed_url = (
+            f"https://www.youtube.com/embed/{video_id}"
+        )
+
+        conn = get_connection()
         cursor = conn.cursor()
 
         cursor.execute(
@@ -186,14 +204,13 @@ def upload_video():
             (course_id,title,video_url)
             VALUES(%s,%s,%s)
             """,
-            (1, title, youtube_url)
+            (1, title, embed_url)
         )
 
         conn.commit()
-
         conn.close()
 
-        return redirect("/lecturer")
+        return redirect("/videos")
 
     return render_template(
         "upload_video.html"
