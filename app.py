@@ -166,7 +166,7 @@ def upload_material():
         "upload_material.html"
     )
 
-    @app.route("/upload-video", methods=["GET", "POST"])
+@app.route("/upload-video", methods=["GET", "POST"])
 def upload_video():
 
     if request.method == "POST":
