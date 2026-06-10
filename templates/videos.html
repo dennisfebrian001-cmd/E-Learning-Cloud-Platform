@@ -1,18 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Videos</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <a href="/" style="color:white;text-decoration:none;">
+            LearnSphere
+        </a>
+    </div>
+</nav>
+
+<div class="container">
+
 <h1>Video Pembelajaran</h1>
+
+<div class="features">
 
 {% for video in videos %}
 
 <div class="card">
 
-<h3>{{ video[1] }}</h3>
+    <h3>{{ video[2] }}</h3>
 
-<a href="{{ video[2] }}"
-target="_blank">
-
-Tonton Video
-
-</a>
+    <a href="{{ video[3] }}" target="_blank">
+        Tonton Video
+    </a>
 
 </div>
 
 {% endfor %}
+
+</div>
+
+</div>
+
+</body>
+</html>

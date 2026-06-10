@@ -3,6 +3,7 @@ from flask import (
     render_template,
     request,
     redirect,
+    send_from_directory,
     url_for
 )
 
@@ -299,5 +300,12 @@ def submissions():
     return render_template(
         "submissions.html",
         submissions=data
+    )
+
+@app.route("/uploads/<filename>")
+def uploaded_file(filename):
+    return send_from_directory(
+        app.config["UPLOAD_FOLDER"],
+        filename
     )
 
