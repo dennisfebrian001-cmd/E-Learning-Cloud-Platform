@@ -17,6 +17,25 @@ filename='css/style.css') }}">
 
 <h1>Submit Assignment</h1>
 
+<h2>
+
+{{ assignment[2] }}
+
+</h2>
+
+<p>
+
+{{ assignment[3] }}
+
+</p>
+
+<p>
+
+Deadline :
+{{ assignment[4] }}
+
+</p>
+
 <form
 method="POST"
 enctype="multipart/form-data">
@@ -36,9 +55,11 @@ required>
 
 <br><br>
 
-<button class="btn">
+<button
+type="submit"
+class="btn">
 
-Submit
+Submit Assignment
 
 </button>
 
@@ -47,4 +68,5 @@ Submit
 </div>
 
 </body>
+
 </html>

@@ -31,24 +31,38 @@
 <table class="table">
 
 <tr>
-    <th>ID</th>
-    <th>Student</th>
-    <th>File</th>
+
+<th>ID</th>
+
+<th>Assignment</th>
+
+<th>Student</th>
+
+<th>File</th>
+
 </tr>
 
 {% for s in submissions %}
 
 <tr>
 
-    <td>{{ s[0] }}</td>
+<td>{{ s[0] }}</td>
 
-    <td>{{ s[2] }}</td>
+<td>{{ s[1] }}</td>
 
-    <td>
-        <a href="{{ s[3] }}" target="_blank">
-            Download File
-        </a>
-    </td>
+<td>{{ s[2] }}</td>
+
+<td>
+
+<a
+href="{{ s[3] }}"
+target="_blank">
+
+Download File
+
+</a>
+
+</td>
 
 </tr>
 

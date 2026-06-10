@@ -39,37 +39,17 @@ LearnSphere
 
 <div class="features">
 
-<div class="card">
-
-<h3>Cloud Computing</h3>
-
-<p>AWS Fundamentals</p>
-
-</div>
+{% for course in courses %}
 
 <div class="card">
 
-<h3>Python Programming</h3>
+<h3>{{ course[1] }}</h3>
 
-<p>Programming Basics</p>
-
-</div>
-
-<div class="card">
-
-<h3>Flask Development</h3>
-
-<p>Web Development</p>
+<p>{{ course[2] }}</p>
 
 </div>
 
-<div class="card">
-
-<h3>Database Systems</h3>
-
-<p>MySQL & RDS</p>
-
-</div>
+{% endfor %}
 
 </div>
 

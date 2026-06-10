@@ -58,8 +58,37 @@ def home():
 @app.route("/student")
 def student():
 
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT COUNT(*) FROM courses"
+    )
+    total_courses = cursor.fetchone()[0]
+
+    cursor.execute(
+        "SELECT COUNT(*) FROM videos"
+    )
+    total_videos = cursor.fetchone()[0]
+
+    cursor.execute(
+        "SELECT COUNT(*) FROM materials"
+    )
+    total_materials = cursor.fetchone()[0]
+
+    cursor.execute(
+        "SELECT COUNT(*) FROM assignments"
+    )
+    total_assignments = cursor.fetchone()[0]
+
+    conn.close()
+
     return render_template(
-        "student_dashboard.html"
+        "student_dashboard.html",
+        total_courses=total_courses,
+        total_videos=total_videos,
+        total_materials=total_materials,
+        total_assignments=total_assignments
     )
 
 @app.route("/lecturer")
@@ -72,8 +101,20 @@ def lecturer():
 @app.route("/courses")
 def courses():
 
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM courses"
+    )
+
+    courses = cursor.fetchall()
+
+    conn.close()
+
     return render_template(
-        "courses.html"
+        "courses.html",
+        courses=courses
     )
 
 @app.route("/upload-material", methods=["GET","POST"])
@@ -204,17 +245,35 @@ def create_assignment():
         "create_assignment.html"
     )
 
-@app.route("/submit-assignment",
-methods=["GET","POST"])
-def submit_assignment():
+@app.route(
+    "/submit-assignment/<int:assignment_id>",
+    methods=["GET", "POST"]
+)
+def submit_assignment(assignment_id):
 
-    if request.method=="POST":
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT *
+        FROM assignments
+        WHERE id=%s
+        """,
+        (assignment_id,)
+    )
+
+    assignment = cursor.fetchone()
+
+    if request.method == "POST":
 
         student = request.form["student"]
 
         file = request.files["file"]
 
-        bucket_name = "dennisfebrian-project-bucket-2026"
+        bucket_name = (
+            "dennisfebrian-project-bucket-2026"
+        )
 
         s3 = boto3.client("s3")
 
@@ -225,21 +284,26 @@ def submit_assignment():
         )
 
         file_url = (
-            f"https://{bucket_name}.s3.ap-southeast-1.amazonaws.com/"
+            f"https://{bucket_name}"
+            f".s3.ap-southeast-1.amazonaws.com/"
             f"{file.filename}"
         )
-
-        conn = get_connection()
-
-        cursor = conn.cursor()
 
         cursor.execute(
             """
             INSERT INTO submissions
-            (assignment_id,student_name,file_url)
+            (
+                assignment_id,
+                student_name,
+                file_url
+            )
             VALUES(%s,%s,%s)
             """,
-            (1, student, file_url)
+            (
+                assignment_id,
+                student,
+                file_url
+            )
         )
 
         conn.commit()
@@ -247,8 +311,11 @@ def submit_assignment():
 
         return redirect("/student")
 
+    conn.close()
+
     return render_template(
-        "submit_assignment.html"
+        "submit_assignment.html",
+        assignment=assignment
     )
 
 @app.route("/materials")
@@ -275,40 +342,48 @@ def materials():
 def assignments():
 
     conn = get_connection()
-
     cursor = conn.cursor()
 
     cursor.execute(
         "SELECT * FROM assignments"
     )
 
-    data = cursor.fetchall()
+    assignments = cursor.fetchall()
 
     conn.close()
 
     return render_template(
         "assignments.html",
-        assignments=data
+        assignments=assignments
     )
 
 @app.route("/submissions")
 def submissions():
 
     conn = get_connection()
-
     cursor = conn.cursor()
 
     cursor.execute(
-        "SELECT * FROM submissions"
+        """
+        SELECT
+            submissions.id,
+            assignments.title,
+            submissions.student_name,
+            submissions.file_url
+        FROM submissions
+        JOIN assignments
+        ON submissions.assignment_id =
+           assignments.id
+        """
     )
 
-    data = cursor.fetchall()
+    submissions = cursor.fetchall()
 
     conn.close()
 
     return render_template(
         "submissions.html",
-        submissions=data
+        submissions=submissions
     )
 
 @app.route("/uploads/<filename>")
