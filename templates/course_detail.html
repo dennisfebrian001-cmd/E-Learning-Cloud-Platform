@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>{{ course[1] }}</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="logo">
+
+<a href="/"
+style="color:white;text-decoration:none;">
+
+LearnSphere
+
+</a>
+
+</div>
+
+<div>
+
+<a href="/">Home</a>
+<a href="/courses">Courses</a>
+<a href="/student">Student</a>
+<a href="/lecturer">Lecturer</a>
+
+</div>
+
+</nav>
+
+<div class="container">
+
+<h1>{{ course[1] }}</h1>
+
+<p>{{ course[2] }}</p>
+
+<br>
+
+<h2>Learning Videos</h2>
+
+<div class="features">
+
+{% for video in videos %}
+
+<div class="card">
+
+<h3>{{ video[2] }}</h3>
+
+<a
+href="{{ video[3] }}"
+target="_blank"
+class="btn">
+
+Watch Video
+
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<br>
+
+<h2>Materials</h2>
+
+<div class="features">
+
+{% for material in materials %}
+
+<div class="card">
+
+<h3>{{ material[2] }}</h3>
+
+<a
+href="{{ material[3] }}"
+target="_blank"
+class="btn">
+
+Download Material
+
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<br>
+
+<h2>Assignments</h2>
+
+<div class="features">
+
+{% for assignment in assignments %}
+
+<div class="card">
+
+<h3>{{ assignment[2] }}</h3>
+
+<p>{{ assignment[3] }}</p>
+
+<p>
+
+Deadline:
+{{ assignment[4] }}
+
+</p>
+
+<a
+href="/submit-assignment/{{ assignment[0] }}"
+class="btn">
+
+Submit Assignment
+
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</body>
+</html>
