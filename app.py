@@ -214,13 +214,19 @@ def submit_assignment():
 
         file = request.files["file"]
 
-        filename = file.filename
+        bucket_name = "dennisfebrian-project-bucket-2026"
 
-        file.save(
-            os.path.join(
-                app.config["UPLOAD_FOLDER"],
-                filename
-            )
+        s3 = boto3.client("s3")
+
+        s3.upload_fileobj(
+            file,
+            bucket_name,
+            file.filename
+        )
+
+        file_url = (
+            f"https://{bucket_name}.s3.ap-southeast-1.amazonaws.com/"
+            f"{file.filename}"
         )
 
         conn = get_connection()
@@ -233,8 +239,13 @@ def submit_assignment():
             (assignment_id,student_name,file_url)
             VALUES(%s,%s,%s)
             """,
-            (1, student, filename)
+            (1, student, file_url)
         )
+
+        conn.commit()
+        conn.close()
+
+        return redirect("/student")
 
         conn.commit()
 

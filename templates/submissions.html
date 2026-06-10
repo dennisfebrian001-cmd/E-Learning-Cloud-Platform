@@ -2,12 +2,34 @@
 <html>
 <head>
     <title>Submissions</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
 </head>
+
 <body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        LearnSphere
+    </div>
+
+    <div>
+        <a href="/">Home</a>
+        <a href="/student">Student</a>
+        <a href="/lecturer">Lecturer</a>
+    </div>
+
+</nav>
+
+<div class="container">
 
 <h1>Student Submissions</h1>
 
-<table border="1">
+<table class="table">
+
 <tr>
     <th>ID</th>
     <th>Student</th>
@@ -15,14 +37,26 @@
 </tr>
 
 {% for s in submissions %}
+
 <tr>
+
     <td>{{ s[0] }}</td>
+
     <td>{{ s[2] }}</td>
-    <td>{{ s[3] }}</td>
+
+    <td>
+        <a href="{{ s[3] }}" target="_blank">
+            Download File
+        </a>
+    </td>
+
 </tr>
+
 {% endfor %}
 
 </table>
+
+</div>
 
 </body>
 </html>
