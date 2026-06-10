@@ -1,36 +1,73 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-<title>Create Assignment</title>
-<link rel="stylesheet"
-href="{{ url_for('static',
-filename='css/style.css') }}">
+    <title>Create Assignment</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
 </head>
 
 <body>
 
+<nav class="navbar">
+
+    <div class="logo">
+        <a href="/"
+           style="color:white;text-decoration:none;">
+           LearnSphere
+        </a>
+    </div>
+
+    <div>
+        <a href="/">Home</a>
+        <a href="/courses">Courses</a>
+        <a href="/student">Student</a>
+        <a href="/lecturer">Lecturer</a>
+    </div>
+
+</nav>
+
 <div class="container">
 
-<h1>Create Assignment</h1>
+    <h1>Create Assignment</h1>
 
-<form method="POST">
+    <form method="POST">
 
-<input
-type="text"
-name="title"
-placeholder="Assignment Title"
-required>
+    <input
+        type="text"
+        name="title"
+        placeholder="Assignment Title"
+        required>
 
-<br><br>
+    <br><br>
 
-<button class="btn">
+    <input
+        type="text"
+        name="description"
+        placeholder="Assignment Description"
+        required>
 
-Create Assignment
+    <br><br>
 
-</button>
+    <input
+        type="date"
+        name="deadline"
+        required>
+
+    <br><br>
+
+    <button type="submit" class="btn">
+        Create Assignment
+    </button>
 
 </form>
+
+    <br><br>
+
+    <a href="/assignments" class="btn">
+        View Assignments
+    </a>
 
 </div>
 

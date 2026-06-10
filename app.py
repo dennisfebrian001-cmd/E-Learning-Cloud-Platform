@@ -177,28 +177,28 @@ def videos():
 methods=["GET","POST"])
 def create_assignment():
 
-    if request.method=="POST":
+    if request.method == "POST":
 
         title = request.form["title"]
+        description = request.form["description"]
+        deadline = request.form["deadline"]
 
         conn = get_connection()
-
         cursor = conn.cursor()
 
         cursor.execute(
             """
             INSERT INTO assignments
-            (course_id,title)
-            VALUES(%s,%s)
+            (course_id,title,description,deadline)
+            VALUES(%s,%s,%s,%s)
             """,
-            (1, title)
+            (1, title, description, deadline)
         )
 
         conn.commit()
-
         conn.close()
 
-        return redirect("/lecturer")
+        return redirect("/assignments")
 
     return render_template(
         "create_assignment.html"
@@ -243,12 +243,6 @@ def submit_assignment():
         )
 
         conn.commit()
-        conn.close()
-
-        return redirect("/student")
-
-        conn.commit()
-
         conn.close()
 
         return redirect("/student")

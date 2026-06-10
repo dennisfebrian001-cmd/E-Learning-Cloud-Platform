@@ -30,17 +30,19 @@
 
         <tr>
             <th>ID</th>
-            <th>Assignment</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Deadline</th>
         </tr>
 
-        {% for a in assignments %}
-
+    {% for a in assignments %}
         <tr>
             <td>{{ a[0] }}</td>
             <td>{{ a[2] }}</td>
+            <td>{{ a[3] }}</td>
+            <td>{{ a[4] }}</td>
         </tr>
-
-        {% endfor %}
+    {% endfor %}
 
     </table>
 
