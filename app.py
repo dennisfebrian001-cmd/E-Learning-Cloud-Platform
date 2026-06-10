@@ -82,20 +82,24 @@ def upload_material():
     if request.method == "POST":
 
         title = request.form["title"]
-
         file = request.files["file"]
 
-        filename = file.filename
+        bucket_name = "dennisfebrian-project-bucket-2026"
 
-        filepath = os.path.join(
-            app.config["UPLOAD_FOLDER"],
-            filename
+        s3 = boto3.client("s3")
+
+        s3.upload_fileobj(
+            file,
+            bucket_name,
+            file.filename
         )
 
-        file.save(filepath)
+        file_url = (
+            f"https://{bucket_name}.s3.ap-southeast-1.amazonaws.com/"
+            f"{file.filename}"
+        )
 
         conn = get_connection()
-
         cursor = conn.cursor()
 
         cursor.execute(
@@ -104,7 +108,7 @@ def upload_material():
             (course_id,title,file_url)
             VALUES(%s,%s,%s)
             """,
-            (1, title, filename)
+            (1, title, file_url)
         )
 
         conn.commit()
