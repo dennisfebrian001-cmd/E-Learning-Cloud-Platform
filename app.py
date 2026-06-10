@@ -122,23 +122,60 @@ def lecturer():
         "lecturer_dashboard.html"
     )
 
-@app.route("/courses")
-def courses():
+@app.route("/course/<int:id>")
+def course_detail(id):
 
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute(
-        "SELECT * FROM courses"
+        "SELECT * FROM courses WHERE id=%s",
+        (id,)
     )
 
-    courses = cursor.fetchall()
+    course = cursor.fetchone()
+
+    cursor.execute(
+        """
+        SELECT *
+        FROM videos
+        WHERE course_id=%s
+        """,
+        (id,)
+    )
+
+    videos = cursor.fetchall()
+
+    cursor.execute(
+        """
+        SELECT *
+        FROM materials
+        WHERE course_id=%s
+        """,
+        (id,)
+    )
+
+    materials = cursor.fetchall()
+
+    cursor.execute(
+        """
+        SELECT *
+        FROM assignments
+        WHERE course_id=%s
+        """,
+        (id,)
+    )
+
+    assignments = cursor.fetchall()
 
     conn.close()
 
     return render_template(
-        "courses.html",
-        courses=courses
+        "course_detail.html",
+        course=course,
+        videos=videos,
+        materials=materials,
+        assignments=assignments
     )
 
 @app.route("/upload-material", methods=["GET","POST"])
