@@ -53,7 +53,31 @@ os.makedirs(
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM courses")
+    total_courses = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM videos")
+    total_videos = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM materials")
+    total_materials = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM assignments")
+    total_assignments = cursor.fetchone()[0]
+
+    conn.close()
+
+    return render_template(
+        "index.html",
+        total_courses=total_courses,
+        total_videos=total_videos,
+        total_materials=total_materials,
+        total_assignments=total_assignments
+    )
 
 @app.route("/student")
 def student():

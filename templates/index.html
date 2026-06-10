@@ -34,54 +34,44 @@
 
     <section class="hero">
 
-        <h1>
-            Learn Anywhere,
-            Anytime
-        </h1>
+        <h1>Learn Anywhere, Anytime</h1>
 
         <p>
-            Cloud Based E-Learning Platform
-            powered by AWS
+            Cloud-Based Learning Management System
+            powered by AWS Cloud Services
         </p>
 
-        <a href="/courses"
-           class="btn">
-
-            Explore Courses
-
+        <a href="/courses" class="btn">
+            Browse Courses
         </a>
 
     </section>
 
     <section class="features">
 
-        <div class="card">
+        <div class="stats">
 
-            <h3>Video Learning</h3>
+        <div class="stat-card">
+            <h2>{{ total_courses }}</h2>
+            <p>Courses</p>
+            </div>
 
-            <p>
-                Watch online lectures
-            </p>
+            <div class="stat-card">
+        <h2>{{ total_videos }}</h2>
+            <p>Videos</p>
+</div>
 
-        </div>
+<div class="stat-card">
+<h2>{{ total_materials }}</h2>
+<p>Materials</p>
+</div>
 
-        <div class="card">
+<div class="stat-card">
+<h2>{{ total_assignments }}</h2>
+<p>Assignments</p>
+</div>
 
-            <h3>Assignments</h3>
-
-            <p>
-                Submit your tasks online
-            </p>
-
-        </div>
-
-        <div class="card">
-
-            <h3>Cloud Storage</h3>
-
-            <p>
-                Material stored in AWS
-            </p>
+</div>
 
         </div>
 
