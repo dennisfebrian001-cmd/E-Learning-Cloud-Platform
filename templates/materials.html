@@ -4,7 +4,7 @@
     <title>Materials</title>
 
     <link rel="stylesheet"
-    href="{{ url_for('static', filename='css/style.css') }}">
+          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
@@ -27,13 +27,15 @@
 
 <div class="card">
 
-<h3>{{ item[2] }}</h3>
+    <h3>{{ item[2] }}</h3>
 
-<p>{{ item[3] }}</p>
+    <p>{{ item[3] }}</p>
 
 </div>
 
 {% endfor %}
+
+</div>
 
 </div>
 
